@@ -16,6 +16,22 @@ document.addEventListener('DOMContentLoaded', () =>{
     clientAndPageUpdate(pixels)
   })
 
+  // parallax - move certain tags based on how far they are from the anchor point (middle of section)
+  document.addEventListener('scroll', () => {
+    const topViewport = window.pageYOffset
+    const midViewport = topViewport + (window.innerHeight / 2)
+
+    sections.forEach(s => {
+      const topSection = s.offsetTop
+      const midSection = topSection + (s.offsetHeight / 2)
+      const distanceToSection = midViewport - midSection
+
+      const tag = s.querySelector('div.square')
+      const speed = parseFloat(tag.getAttribute('data-parallax'))
+      tag.style.transform = `translate(0, ${distanceToSection * speed}px)`
+    })
+  })
+
   function progressBar(pixels) {
     const pageHeight = bodyTag.getBoundingClientRect().height
     const totalScrollDistance = pageHeight - window.innerHeight

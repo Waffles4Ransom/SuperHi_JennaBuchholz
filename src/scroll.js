@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () =>{
   const pixelTag = document.querySelector('div.pixel')
   const bodyTag = document.querySelector('body')
   const progressTag = document.querySelector('div.progress')
-
   const sections = document.querySelectorAll('section')
   const clientTag = document.querySelector('div.client')
   const pageTag = document.querySelector('div.page')
@@ -14,22 +13,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     pixelTag.innerHTML = pixels
     progressBar(pixels)
     clientAndPageUpdate(pixels)
-  })
-
-  // parallax - move certain tags based on how far they are from the anchor point (middle of section)
-  document.addEventListener('scroll', () => {
-    const topViewport = window.pageYOffset
-    const midViewport = topViewport + (window.innerHeight / 2)
-
-    sections.forEach(s => {
-      const topSection = s.offsetTop
-      const midSection = topSection + (s.offsetHeight / 2)
-      const distanceToSection = midViewport - midSection
-
-      const tag = s.querySelector('div.square')
-      const speed = parseFloat(tag.getAttribute('data-parallax'))
-      tag.style.transform = `translate(0, ${distanceToSection * speed}px)`
-    })
+    parallaxEffect(pixels)
   })
 
   function progressBar(pixels) {
@@ -52,6 +36,20 @@ document.addEventListener('DOMContentLoaded', () =>{
           progressTag.classList.remove("white")
         }
       }
+    })
+  }
+
+  function parallaxEffect(pixels) {
+    const midViewport = pixels + (window.innerHeight / 2)
+    sections.forEach(s => {
+      const topSection = s.offsetTop
+      const midSection = topSection + (s.offsetHeight / 2)
+      const distanceToSection = midViewport - midSection
+      const parallaxTags = s.querySelectorAll('[data-parallax]')
+      parallaxTags.forEach(tag => {
+        const speed = parseFloat(tag.getAttribute('data-parallax'))
+        tag.style.transform = `translate(0, ${distanceToSection * speed}px)`
+      })
     })
   }
 
